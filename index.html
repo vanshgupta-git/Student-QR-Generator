@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Student QR Generator</title>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Student QR Generator</h2>
+
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="college" placeholder="College" required>
+        <input type="text" id="branch" placeholder="Branch" required>
+        <input type="email" id="email" placeholder="Email" required>
+
+        <button onclick="generateAndSend()">Generate QR</button>
+
+        <div id="qr"></div>
+        <div id="details"></div>
+        <div id="downloadContainer"></div>
+    </div>
+<script src = "https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
