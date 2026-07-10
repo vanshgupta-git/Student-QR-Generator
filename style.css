@@ -63,3 +63,22 @@
         #qr {
             margin-top: 15px;
         }
+
+        .upload-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #093b66;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+.upload-btn:hover {
+    background: #06345b;
+}
+
+#fileName {
+    margin-left: 10px;
+    font-size: 14px;
+}

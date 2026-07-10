@@ -1,3 +1,22 @@
+const imageInput = document.getElementById("userImage");
+const preview = document.getElementById("preview");
+
+imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+
 function getFormData() {
         return {
             name: document.getElementById("name").value.trim(),
@@ -38,9 +57,8 @@ function generateAndSend() {
     document.getElementById("downloadContainer").appendChild(btn);
 }
 
-function downloadQR() {
-    const qrContainer = document.getElementById("qr");
-    const qrCanvas = qrContainer.querySelector("canvas");
+async function downloadQR() {
+    const qrCanvas = document.querySelector("#qr canvas");
 
     if (!qrCanvas) {
         alert("QR not generated yet!");
@@ -48,32 +66,87 @@ function downloadQR() {
     }
 
     const data = getFormData();
-    const qrData = `Name: ${data.name}\nCollege: ${data.college}\nBranch: ${data.branch}`;
 
-    const finalCanvas = document.createElement("canvas");
-    const ctx = finalCanvas.getContext("2d");
+    const uploadedFile = document.getElementById("userImage").files[0];
 
-    finalCanvas.width = qrCanvas.width + 20;
-    finalCanvas.height = qrCanvas.height + 100;
+    // Helper to load image from URL
+    function loadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = src;
+        });
+    }
 
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+    // Helper to load uploaded image
+    function loadUploaded(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) resolve(null);
 
-    ctx.drawImage(qrCanvas, 10, 10);
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+    const logo = await loadImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJMVYLJAeXrWVF1SHoUExQbmdRmsBy6Nn5iy9IpPXQBg&s=10");
+    const userImage = await loadUploaded(uploadedFile);
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 500;
+    canvas.height = 850;
+
+    // Background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    let y = 20;
+
+    // ---------------- Logo ----------------
+    ctx.drawImage(logo, 50, y, 400, 120);
+    y += 150;
+
+    // -------------- Uploaded Image --------------
+    if (userImage) {
+        ctx.drawImage(userImage, 150, y, 200, 220);
+        y += 270;
+    }
+
+    // ---------------- Details ----------------
     ctx.fillStyle = "#000";
-    ctx.font = "14px Arial";
+    ctx.font = "20px Arial";
     ctx.textAlign = "center";
 
-    qrData.split("\n").forEach((line, i) => {
-        ctx.fillText(
-            line,
-            finalCanvas.width / 2,
-            qrCanvas.height + 30 + (i * 18)
-        );
-    });
+    ctx.fillText(`Name: ${data.name}`, canvas.width / 2, y);
+    y += 35;
 
+    ctx.fillText(`College: ${data.college}`, canvas.width / 2, y);
+    y += 35;
+
+    ctx.fillText(`Branch: ${data.branch}`, canvas.width / 2, y);
+    y += 50;
+
+    // ---------------- QR ----------------
+    ctx.drawImage(
+        qrCanvas,
+        (canvas.width - qrCanvas.width) / 2,
+        y
+    );
+
+    // Download
     const link = document.createElement("a");
-    link.download = "qr-with-details.png";
-    link.href = finalCanvas.toDataURL("image/png");
+    link.download = "StudentQR.png";
+    link.href = canvas.toDataURL("image/png");
     link.click();
 }
