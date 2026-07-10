@@ -15,13 +15,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 30px 30px;
+        padding: 50px;
     }
 
     .card {
         background: #fff;
         padding: 25px;
-        width: 340px;
+        max-width: 300px;
         border-radius: 12px;
         box-shadow: 0 0 100px 10px rgba(0, 0, 0, 0.25);
         text-align: center;
@@ -32,7 +32,7 @@
     }
 
     .card img {
-        width: 340px;
+        max-width: 300px;
 
     }
 
