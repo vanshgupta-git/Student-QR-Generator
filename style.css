@@ -1,85 +1,90 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
-        * {
-            padding: 0;
-            margin: 0;
-            font-family: "Poppins", sans-serif;
-            font-weight: 500;
-            font-style: normal;
-        }
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 30px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 30px;
+    }
 
-        .card {
-            background: #fff;
-            padding: 25px;
-            width: 340px;
-            border-radius: 12px;
-            box-shadow: 0 0 100px 10px rgba(0, 0, 0, 0.25);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+    .card {
+        background: #fff;
+        padding: 25px;
+        width: 340px;
+        border-radius: 12px;
+        box-shadow: 0 0 100px 10px rgba(0, 0, 0, 0.25);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-        h2 {
-            margin-bottom: 15px;
-            color: #222;
-        }
+    .card img {
+        width: 340px;
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 7px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            outline: none;
-        }
+    }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 6px;
-            background: #F8B016;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    h2 {
+        margin-bottom: 15px;
+        color: #222;
+    }
 
-        button:hover {
-            background: #4338ca;
-        }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 7px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
 
-        #qr {
-            margin-top: 15px;
-        }
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 6px;
+        background: #F8B016;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        .upload-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    background: #093b66;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: Arial, sans-serif;
-}
+    button:hover {
+        background: #4338ca;
+    }
 
-.upload-btn:hover {
-    background: #06345b;
-}
+    #qr {
+        margin-top: 15px;
+    }
 
-#fileName {
-    margin-left: 10px;
-    font-size: 14px;
-}
+    .upload-btn {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #093b66;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+    }
+
+    .upload-btn:hover {
+        background: #06345b;
+    }
+
+    #fileName {
+        margin-left: 10px;
+        font-size: 14px;
+    }
