@@ -13,9 +13,16 @@ imageInput.addEventListener("change", function () {
         preview.style.display = "block";
     };
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file); 
 });
+const input = document.getElementById("userImage");
+const fileName = document.getElementById("fileName");
 
+input.addEventListener("change", function () {
+    fileName.textContent = this.files.length
+        ? this.files[0].name
+        : "No file selected";
+});
 
 function getFormData() {
         return {
@@ -53,8 +60,10 @@ function generateAndSend() {
     const btn = document.createElement("button");
     btn.innerText = "Download QR";
     btn.onclick = downloadQR;
-
+document.getElementById("downloadContainer").scrollIntoView({
+        behavior: "smooth"})
     document.getElementById("downloadContainer").appendChild(btn);
+
 }
 
 async function downloadQR() {
