@@ -13,19 +13,23 @@
         <img src="https://giftasmilefoundation.org/wp-content/uploads/2025/10/Gift-a-Smile-Foundation-Lets-Gift-a-Smile.webp" alt="GIFT A SMILE FOUNDATION">
         <h2>Student QR Generator</h2>
 
-        <input type="file" id="userImage" accept="image/*" capture="user" hidden>
+        <input type="file" id="userImage" accept="image/*" capture="user" hidden required>
 
 <label for="userImage" class="upload-btn">
     Capture Your Photo
 </label>
 
 <span id="fileName">No Photo Captured Yet</span>
-        <img id="preview" width="250" style="display:none;">
+
+        <img id="preview" width="250" style="display:none;" >
         <input type="text" id="name" placeholder="Name" required>
         <input type="text" id="college" placeholder="College" required>
         <input type="text" id="branch" placeholder="Branch" required>
         <input type="email" id="email" placeholder="Email" required>
-
+<div id="loader" class="loader-container">
+    <div class="spinner"></div>
+    <p>Checking location...</p>
+</div>
         <button onclick="generateAndSend()">Generate QR</button>
 
         <div id="qr"></div>

@@ -1,10 +1,92 @@
 const imageInput = document.getElementById("userImage");
 const preview = document.getElementById("preview");
+const fileName = document.getElementById("fileName");
+const today = new Date();
 
+function getLocation() {
+    return new Promise((resolve, reject) => {
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+
+                resolve({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                });
+
+            },
+            (error) => {
+                reject(error);
+            }
+        );
+
+    });
+}
+
+const allowedLocation = {
+    lat: 28.848620,
+    lon: 77.573760
+
+
+};
+
+const allowedRadius = 200; // meters
+function calculateDistance(lat1, lon1, lat2, lon2) {
+
+    const R = 6371000; // Earth radius in meters
+
+    const dLat = (lat2-lat1) * Math.PI / 180;
+    const dLon = (lon2-lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1*Math.PI/180) *
+        Math.cos(lat2*Math.PI/180) *
+        Math.sin(dLon/2) *
+        Math.sin(dLon/2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c;
+}
+
+
+async function verifyLocation(){
+
+    try {
+        const userLocation = await getLocation();
+
+        const distance = calculateDistance(
+            userLocation.lat,
+            userLocation.lon,
+            allowedLocation.lat,
+            allowedLocation.lon
+        );
+
+        if(distance <= allowedRadius){
+            return true;
+        }
+
+        alert(`You are outside the attendance area.\nDistance: ${Math.round(distance)} meters`);
+        return false;
+
+    } catch(error) {
+        alert("Please allow location permission to continue.");
+        return false;
+    }
+}
+
+// Show image preview and filename
 imageInput.addEventListener("change", function () {
     const file = this.files[0];
 
-    if (!file) return;
+    if (!file) {
+        preview.style.display = "none";
+        fileName.textContent = "No file selected";
+        return;
+    }
+
+    fileName.textContent = file.name;
 
     const reader = new FileReader();
 
@@ -13,15 +95,7 @@ imageInput.addEventListener("change", function () {
         preview.style.display = "block";
     };
 
-    reader.readAsDataURL(file); 
-});
-const input = document.getElementById("userImage");
-const fileName = document.getElementById("fileName");
-
-input.addEventListener("change", function () {
-    fileName.textContent = this.files.length
-        ? this.files[0].name
-        : "No file selected";
+    reader.readAsDataURL(file);
 });
 
 function getFormData() {
@@ -29,11 +103,19 @@ function getFormData() {
             name: document.getElementById("name").value.trim(),
             college: document.getElementById("college").value.trim(),
             branch: document.getElementById("branch").value.trim(),
-            email: document.getElementById("email").value.trim()
+            email: document.getElementById("email").value.trim(),
+            date: today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
         };
     }
 
-function generateAndSend() {
+async function generateAndSend() {
+
+    if (imageInput.files.length === 0) {
+        alert("Please capture your photo first.");
+        imageInput.click();
+        return;
+    }
+
     const data = getFormData();
 
     if (!data.name || !data.college || !data.branch || !data.email) {
@@ -41,7 +123,20 @@ function generateAndSend() {
         return;
     }
 
-    const qrData = `Name: ${data.name}\nCollege: ${data.college}\nBranch: ${data.branch}`;
+    const loader = document.getElementById("loader");
+    loader.style.display = "block";
+
+    const isAllowed = await verifyLocation();
+
+    if (!isAllowed) {
+        loader.style.display = "none";
+        return;
+    }
+
+    loader.style.display = "none";
+
+
+    const qrData = `Name: ${data.name}\nCollege: ${data.college}\nBranch: ${data.branch}\nDate: ${data.date}`;
 
     document.getElementById("qr").innerHTML = "";
     document.getElementById("details").innerHTML = "";
@@ -60,10 +155,12 @@ function generateAndSend() {
     const btn = document.createElement("button");
     btn.innerText = "Download QR";
     btn.onclick = downloadQR;
-document.getElementById("downloadContainer").scrollIntoView({
-        behavior: "smooth"})
-    document.getElementById("downloadContainer").appendChild(btn);
 
+    document.getElementById("downloadContainer")
+        .appendChild(btn);
+
+    document.getElementById("downloadContainer")
+        .scrollIntoView({behavior:"smooth"});
 }
 
 async function downloadQR() {
