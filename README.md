@@ -56,9 +56,9 @@ student-qr-generator/
 ## 📥 Setup Instructions
 
 1. Clone the repository:
-git clone https://github.com/your-username/student-qr-generator.git
+git clone https://github.com/vanshgupta-git/student-qr-generator-new.git
 
-2. Open index.html in browser
+3. Open index.html in browser
 
 No installation required
 
